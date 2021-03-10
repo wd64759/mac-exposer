@@ -1,0 +1,53 @@
+Date : 2021-03-09 23:38:11
+Directory : /mnt/d/code/e4/machelper
+Total : 12 files,  280 codes, 19 comments, 80 blanks, all 379 lines
+
+Languages
++----------+------------+------------+------------+------------+------------+
+| language | files      | code       | comment    | blank      | total      |
++----------+------------+------------+------------+------------+------------+
+| Java     |         12 |        280 |         19 |         80 |        379 |
++----------+------------+------------+------------+------------+------------+
+
+Directories
++------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| path                                                                                           | files      | code       | comment    | blank      | total      |
++------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| .                                                                                              |         12 |        280 |         19 |         80 |        379 |
+| src                                                                                            |         12 |        280 |         19 |         80 |        379 |
+| src/main                                                                                       |          9 |        221 |         18 |         58 |        297 |
+| src/main/java                                                                                  |          9 |        221 |         18 |         58 |        297 |
+| src/main/java/com                                                                              |          9 |        221 |         18 |         58 |        297 |
+| src/main/java/com/cte4                                                                         |          9 |        221 |         18 |         58 |        297 |
+| src/main/java/com/cte4/mac                                                                     |          9 |        221 |         18 |         58 |        297 |
+| src/main/java/com/cte4/mac/machelper                                                           |          9 |        221 |         18 |         58 |        297 |
+| src/main/java/com/cte4/mac/machelper/collectors                                                |          1 |         66 |          0 |         12 |         78 |
+| src/main/java/com/cte4/mac/machelper/model                                                     |          2 |         25 |          0 |          7 |         32 |
+| src/main/java/com/cte4/mac/machelper/utils                                                     |          3 |         96 |         10 |         24 |        130 |
+| src/test                                                                                       |          3 |         59 |          1 |         22 |         82 |
+| src/test/java                                                                                  |          3 |         59 |          1 |         22 |         82 |
+| src/test/java/com                                                                              |          3 |         59 |          1 |         22 |         82 |
+| src/test/java/com/cte4                                                                         |          3 |         59 |          1 |         22 |         82 |
+| src/test/java/com/cte4/mac                                                                     |          3 |         59 |          1 |         22 |         82 |
+| src/test/java/com/cte4/mac/machelper                                                           |          3 |         59 |          1 |         22 |         82 |
+| src/test/java/com/cte4/mac/machelper/collectors                                                |          1 |          8 |          0 |          2 |         10 |
++------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+
+Files
++------------------------------------------------------------------------------------------------+----------+------------+------------+------------+------------+
+| filename                                                                                       | language | code       | comment    | blank      | total      |
++------------------------------------------------------------------------------------------------+----------+------------+------------+------------+------------+
+| /mnt/d/code/e4/machelper/src/main/java/com/cte4/mac/machelper/AppMain.java                     | Java     |          6 |          0 |          2 |          8 |
+| /mnt/d/code/e4/machelper/src/main/java/com/cte4/mac/machelper/JVMHelper.java                   | Java     |         10 |          1 |          5 |         16 |
+| /mnt/d/code/e4/machelper/src/main/java/com/cte4/mac/machelper/MACBaseHelper.java               | Java     |         18 |          7 |          8 |         33 |
+| /mnt/d/code/e4/machelper/src/main/java/com/cte4/mac/machelper/collectors/JVMCollector.java     | Java     |         66 |          0 |         12 |         78 |
+| /mnt/d/code/e4/machelper/src/main/java/com/cte4/mac/machelper/model/ReqEntity.java             | Java     |         18 |          0 |          4 |         22 |
+| /mnt/d/code/e4/machelper/src/main/java/com/cte4/mac/machelper/model/RespEntity.java            | Java     |          7 |          0 |          3 |         10 |
+| /mnt/d/code/e4/machelper/src/main/java/com/cte4/mac/machelper/utils/AgentConnector.java        | Java     |         47 |          7 |         10 |         64 |
+| /mnt/d/code/e4/machelper/src/main/java/com/cte4/mac/machelper/utils/AgentSettings.java         | Java     |         13 |          3 |          3 |         19 |
+| /mnt/d/code/e4/machelper/src/main/java/com/cte4/mac/machelper/utils/SocketClient.java          | Java     |         36 |          0 |         11 |         47 |
+| /mnt/d/code/e4/machelper/src/test/java/com/cte4/mac/machelper/JVMHelperTest.java               | Java     |          9 |          0 |          4 |         13 |
+| /mnt/d/code/e4/machelper/src/test/java/com/cte4/mac/machelper/WebSocketTest.java               | Java     |         42 |          1 |         16 |         59 |
+| /mnt/d/code/e4/machelper/src/test/java/com/cte4/mac/machelper/collectors/JVMCollectorTest.java | Java     |          8 |          0 |          2 |         10 |
+| Total                                                                                          |          |        280 |         19 |         80 |        379 |
++------------------------------------------------------------------------------------------------+----------+------------+------------+------------+------------+
