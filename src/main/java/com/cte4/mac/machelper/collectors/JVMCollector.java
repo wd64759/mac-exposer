@@ -11,7 +11,6 @@ public class JVMCollector implements Runnable {
     public boolean endFlag;
     private AgentConnector conn;
     private long sleepTime = 5000;
-    private static Object lock = new Object();
 
     public static JVMCollector runner;
 
@@ -29,8 +28,8 @@ public class JVMCollector implements Runnable {
             conn.sendMessage(peakCount);
             conn.sendMessage(daemonCount);
             try {
-                synchronized (lock) {
-                    lock.wait(sleepTime);
+                synchronized (JVMCollector.class) {
+                    JVMCollector.class.wait(sleepTime);
                 }
             } catch (InterruptedException e) {
             }
@@ -40,8 +39,8 @@ public class JVMCollector implements Runnable {
     public void stopProcess() {
         endFlag = true;
         try {
-            synchronized (lock) {
-                lock.notifyAll();
+            synchronized (JVMCollector.class) {
+                JVMCollector.class.notifyAll();
             }
         } catch (Exception e) {
         }
@@ -53,7 +52,7 @@ public class JVMCollector implements Runnable {
 
     public static void start() {
         if (runner == null) {
-            synchronized(lock) {
+            synchronized(JVMCollector.class) {
                 if(runner == null) {
                     AgentConnector conn = AgentConnector.build();
                     runner = new JVMCollector();
