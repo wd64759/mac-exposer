@@ -1,4 +1,4 @@
-package com.cte4.mac.machelper;
+package com.cte4.mac.machelper.helpers;
 
 import com.cte4.mac.machelper.collectors.JVMCollector;
 
@@ -12,12 +12,12 @@ public class JVMHelper extends Helper  {
     }
     
     public void enableMonitor() {
-        System.out.println(String.format("Rule:[%s] is enabled", this.rule.getName()));
+        System.out.println(String.format("::enable rule::", this.rule.getName()));
         JVMCollector.start();
     }
 
     public static void uninstalled(Rule rule) {
-        System.out.println("===uninstalled===" + rule.getName());
+        System.out.println("::disable rule::" + rule.getName());
         JVMCollector.stop();
     }
 }

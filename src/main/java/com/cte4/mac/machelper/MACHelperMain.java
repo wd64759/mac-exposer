@@ -2,7 +2,7 @@ package com.cte4.mac.machelper;
 
 import java.lang.instrument.Instrumentation;
 
-import com.cte4.mac.machelper.collectors.JVMCollector;
+import com.cte4.mac.machelper.utils.MacCargo;
 
 public class MACHelperMain {
     public static boolean firstTime = true;
@@ -12,21 +12,20 @@ public class MACHelperMain {
     }
 
     public static void premain(String args, Instrumentation inst) throws Exception {
+        System.out.println("::install helpers start::");
         synchronized (MACHelperMain.class) {
             if (firstTime) {
                 firstTime = false;
             } else {
-                System.out.println("<<agent:helpers>> already loaded");
+                System.out.println("::skip helpers installation::");
                 return;
             }
-            // TODO: re-write the train station
-            JVMCollector.start();
-            System.out.println("<<agent:helpers>> start ...");
         }
+        MacCargo.build();
+        System.out.println("::install helpers complete::");
     }
 
-    public static void agentmain(String args, Instrumentation inst) throws Exception
-    {
+    public static void agentmain(String args, Instrumentation inst) throws Exception {
         premain(args, inst);
     }
 }

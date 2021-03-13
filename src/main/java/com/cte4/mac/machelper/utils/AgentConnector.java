@@ -3,8 +3,7 @@ package com.cte4.mac.machelper.utils;
 import java.lang.management.ManagementFactory;
 import java.net.URI;
 
-import com.cte4.mac.machelper.model.ReqEntity;
-import com.cte4.mac.machelper.model.RespEntity;
+import com.cte4.mac.machelper.model.MetricsEntity;
 import com.google.gson.Gson;
 
 public class AgentConnector {
@@ -32,7 +31,7 @@ public class AgentConnector {
         return instance;
     }
 
-    public void sendMessage(ReqEntity req) {
+    public void sendMessage(MetricsEntity req) {
         String reqText = null;
         try {
             reqText = gson.toJson(req);
