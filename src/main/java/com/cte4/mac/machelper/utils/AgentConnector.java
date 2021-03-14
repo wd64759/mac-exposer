@@ -2,7 +2,11 @@ package com.cte4.mac.machelper.utils;
 
 import java.lang.management.ManagementFactory;
 import java.net.URI;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
+import com.cte4.mac.machelper.collectors.TaskCallback;
+import com.cte4.mac.machelper.model.CmdEntity;
 import com.cte4.mac.machelper.model.MetricsEntity;
 import com.google.gson.Gson;
 
@@ -12,6 +16,7 @@ public class AgentConnector {
     private static Gson gson = new Gson();
     private static Object lock = new Object();
     private SocketClient sc;
+    public static Map<String, TaskCallback> listeners = new ConcurrentHashMap<>();
 
     private AgentConnector() {
         String pid = ManagementFactory.getRuntimeMXBean().getName().split("@")[0];
@@ -44,19 +49,25 @@ public class AgentConnector {
     }
 
     public void onMessage(String resp) {
+        System.out.println("::websockt::on_message:" + resp);
         try {
-            // RespEntity pe = gson.fromJson(resp, RespEntity.class);
-            System.out.println("<<sidecar:AgentConnector>> onMessage - " + resp);
-            // if("run_dc".equalsIgnoreCase(pe.cmd)) {
-            //     String dcName = pe.params;
-            //     String fullName = "com.cte4.mac.machelper.collectors." + dcName;
-            //     Class dcRunner = Class.forName(fullName);
-            //     new Thread().start();
-            // }
+            CmdEntity ce = gson.fromJson(resp, CmdEntity.class);
+            listeners.values().stream().forEach(t->{
+                if(t.isAcceptable(ce)) {
+                    t.callback(ce);
+                }
+            });
         } catch (Exception e) {
-            System.out.println("<<sidecar:AgentConnector>> onMessage - unexpected happened");
-            e.printStackTrace();
+            System.out.println("::websockt::on_message: unknown message format - " + e);
         }
+    }
+
+    public void addListener(String name, TaskCallback collector) {
+        listeners.put(name, collector);
+    }
+
+    public void removeListener(String name) {
+        listeners.remove(name);
     }
 
 }

@@ -6,36 +6,35 @@ import java.util.List;
 
 import io.prometheus.jmx.shaded.io.prometheus.client.Collector.MetricFamilySamples;
 
+/**
+ * All models sent from applications are metrics format
+ */
 public class MetricsEntity implements Serializable {
-
+    private static final long serialVersionUID = 1L;
     public MetricsEntity() {
         this.timestamp = System.currentTimeMillis();
     }
-
-    private static final long serialVersionUID = 1L;
-    // who request it - Nullable if function triggered
-    private String requestor;
-    // ID of the request (to be used for matching) - Nullable if function triggered
-    private String requestUID;    
+    private String ruleName;
+    private CmdTypEnum cmdType;  
     // Message generation timestamp
     private long timestamp;
     // Matric content
     private List<MetricFamilySamples> metrics = new ArrayList<>();
 
-    public void setRequestor(String requestor) {
-        this.requestor = requestor;
+    public void setRuleName(String ruleName) {
+        this.ruleName = ruleName;
     }
 
-    public String getRequestor() {
-        return this.requestor;
+    public String getRuleName() {
+        return ruleName;
     }
 
-    public void setReqestUID(String requestUID) {
-        this.requestUID = requestUID;
+    public void setCmdType(CmdTypEnum cmdTyp) {
+        this.cmdType = cmdTyp;
     }
 
-    public String getRequestUID() {
-        return this.requestUID;
+    public CmdTypEnum getCmdType() {
+        return cmdType;
     }
 
     public long getTimestamp() {

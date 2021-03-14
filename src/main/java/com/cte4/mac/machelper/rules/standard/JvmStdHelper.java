@@ -1,13 +1,13 @@
-package com.cte4.mac.machelper.helpers;
+package com.cte4.mac.machelper.rules.standard;
 
 import com.cte4.mac.machelper.collectors.JVMCollector;
 
 import org.jboss.byteman.rule.Rule;
 import org.jboss.byteman.rule.helper.Helper;
 
-public class JVMHelper extends Helper  {
+public class JvmStdHelper extends Helper {
 
-    protected JVMHelper(Rule rule) {
+    protected JvmStdHelper(Rule rule) {
         super(rule);
     }
     
@@ -20,4 +20,5 @@ public class JVMHelper extends Helper  {
         System.out.println("::disable rule::" + rule.getName());
         JVMCollector.stop();
     }
+
 }

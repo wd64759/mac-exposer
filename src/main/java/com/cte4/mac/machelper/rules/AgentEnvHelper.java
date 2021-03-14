@@ -1,4 +1,4 @@
-package com.cte4.mac.machelper.helpers;
+package com.cte4.mac.machelper.rules;
 
 import com.cte4.mac.machelper.collectors.AgentEnvCollector;
 

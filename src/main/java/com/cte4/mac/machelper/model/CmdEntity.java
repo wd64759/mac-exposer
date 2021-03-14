@@ -1,14 +1,37 @@
 package com.cte4.mac.machelper.model;
 
 import java.io.Serializable;
-import java.util.List;
-
-import io.prometheus.jmx.shaded.io.prometheus.client.Collector.MetricFamilySamples;
 
 
-public class ReqEntity implements Serializable {
+public class CmdEntity implements Serializable {
+
     private static final long serialVersionUID = 1L;
-    int standard = 0;
+    private String ruleName;
+    private CmdTypEnum cmdType;
     public long timestamp;
-    List<MetricFamilySamples> metrics;
+
+    public CmdEntity() {
+        timestamp = System.currentTimeMillis();
+    }
+
+    public void setRuleName(String ruleName) {
+        this.ruleName = ruleName;
+    }
+
+    public String getRuleName() {
+        return ruleName;
+    }
+
+    public void setCmdType(CmdTypEnum cmdTyp) {
+        this.cmdType = cmdTyp;
+    }
+
+    public CmdTypEnum getCmdType() {
+        return cmdType;
+    }
+
+    public long getTimestamp() {
+        return timestamp;
+    }
+
 }
