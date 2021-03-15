@@ -10,3 +10,4 @@ public interface TaskCallback {
     public void callback(CmdEntity cmdEntity);
     public boolean isAcceptable(CmdEntity ce);
 }
+

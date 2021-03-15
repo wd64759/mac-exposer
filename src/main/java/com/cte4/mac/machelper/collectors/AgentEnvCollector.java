@@ -11,7 +11,7 @@ import io.prometheus.jmx.shaded.io.prometheus.client.GaugeMetricFamily;
 public class AgentEnvCollector implements TaskExecutor {
 
     private AgentConnector conn;
-    private static final String RULE_NAME = "AgentEnv";
+    private static final String RULE_NAME = "AGENT_FNC";
 
     public AgentEnvCollector() {
         conn = AgentConnector.build();
@@ -19,7 +19,10 @@ public class AgentEnvCollector implements TaskExecutor {
 
     public static void start() {
         AgentEnvCollector collector = new AgentEnvCollector();
-        BaseCollector.startRunner(RULE_NAME, collector);
+        boolean status = BaseCollector.startRunner(RULE_NAME, collector);
+        if (status) {
+            System.out.println("rule is enabled. rule-name:" + RULE_NAME);
+        }
     }
 
     public static void stop() {
@@ -28,7 +31,7 @@ public class AgentEnvCollector implements TaskExecutor {
 
     @Override
     public void execute() {
-        MetricsEntity metrics = new MetricsEntity();
+        MetricsEntity metrics = MetricsEntity.funcBundle(RULE_NAME);
         OperatingSystemMXBean osMXBean = ManagementFactory.getOperatingSystemMXBean();
         metrics.getMetrics().add(new GaugeMetricFamily("process_start_time_seconds",
                 "Start time of the process since unix epoch in seconds.", osMXBean.getAvailableProcessors()));

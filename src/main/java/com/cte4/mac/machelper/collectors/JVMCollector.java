@@ -9,7 +9,7 @@ import io.prometheus.jmx.shaded.io.prometheus.client.hotspot.StandardExports;
 
 public class JVMCollector implements TaskExecutor, TaskCallback {
 
-    private static final String RULE_NAME = "JVM";
+    private static final String RULE_NAME = "JVM_STD";
     private AgentConnector conn;
     StandardExports stdExports;
 
@@ -22,6 +22,7 @@ public class JVMCollector implements TaskExecutor, TaskCallback {
         JVMCollector collector = new JVMCollector();
         boolean status = BaseCollector.startRunner(RULE_NAME, collector, -1);
         if (status) {
+            System.out.println("rule is enabled. rule-name:" + RULE_NAME);
             AgentConnector.build().addListener(RULE_NAME, collector);
         }
     }
@@ -31,8 +32,9 @@ public class JVMCollector implements TaskExecutor, TaskCallback {
     }
 
     public static void stop() {
-        BaseCollector.stopRunner(RULE_NAME);
+        System.out.println("rule is disabled and quit. rule-name:"+ RULE_NAME);
         AgentConnector.build().removeListener(RULE_NAME);
+        BaseCollector.stopRunner(RULE_NAME);
     }
 
     @Override
@@ -42,14 +44,14 @@ public class JVMCollector implements TaskExecutor, TaskCallback {
 
     @Override
     public boolean isAcceptable(CmdEntity ce) {
-        if (ce.getCmdType().equals(CmdTypEnum.DATA) && RULE_NAME.equalsIgnoreCase(ce.getRuleName()))
+        if (ce.getCmdType().equals(CmdTypEnum.STD) && RULE_NAME.equalsIgnoreCase(ce.getRuleName()))
             return true;
         return false;
     }
 
     @Override
     public void execute() {
-        MetricsEntity metrics = new MetricsEntity();
+        MetricsEntity metrics = MetricsEntity.stdBundle(RULE_NAME);
         metrics.getMetrics().addAll(stdExports.collect());
         conn.sendMessage(metrics);
     }

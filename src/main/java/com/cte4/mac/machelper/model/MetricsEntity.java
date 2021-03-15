@@ -11,9 +11,20 @@ import io.prometheus.jmx.shaded.io.prometheus.client.Collector.MetricFamilySampl
  */
 public class MetricsEntity implements Serializable {
     private static final long serialVersionUID = 1L;
-    public MetricsEntity() {
+    private MetricsEntity(String ruleName, CmdTypEnum cmdType) {
+        this.ruleName = ruleName;
+        this.cmdType = cmdType;
         this.timestamp = System.currentTimeMillis();
     }
+
+    public static MetricsEntity funcBundle(String ruleName) {
+        return new MetricsEntity(ruleName, CmdTypEnum.FUNC);
+    }
+
+    public static MetricsEntity stdBundle(String ruleName) {
+        return new MetricsEntity(ruleName, CmdTypEnum.STD);
+    }
+
     private String ruleName;
     private CmdTypEnum cmdType;  
     // Message generation timestamp
@@ -21,16 +32,8 @@ public class MetricsEntity implements Serializable {
     // Matric content
     private List<MetricFamilySamples> metrics = new ArrayList<>();
 
-    public void setRuleName(String ruleName) {
-        this.ruleName = ruleName;
-    }
-
     public String getRuleName() {
         return ruleName;
-    }
-
-    public void setCmdType(CmdTypEnum cmdTyp) {
-        this.cmdType = cmdTyp;
     }
 
     public CmdTypEnum getCmdType() {

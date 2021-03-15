@@ -24,6 +24,7 @@ public class BaseCollector {
             runners.put(runner, tc);
         }
         Thread t = new Thread(tc);
+        t.setDaemon(true);
         t.start();
         return true;
     }
@@ -39,13 +40,14 @@ public class BaseCollector {
         synchronized (runners) {
             TaskCarrier tc = runners.remove(runner);
             if (tc != null) {
+                System.out.println("send stop signal to daemon thread. rule: " + runner);
                 tc.stop();
             }
         }
     }
 
     static class TaskCarrier implements Runnable {
-        private boolean endFlag;
+        private boolean endFlag = false;
         private TaskExecutor executor;
         private long sleepTime;
         private Object locker = new Object();
@@ -57,18 +59,26 @@ public class BaseCollector {
 
         @Override
         public void run() {
-            if (sleepTime > 0) {
-                executor.execute();
-            }
+            // TODO: figure out a good way to init websocket
+            // if (sleepTime > 0) {
+            executor.execute();
+            // }
             while (!endFlag) {
                 synchronized (locker) {
                     try {
-                        locker.wait(sleepTime);
+                        if (sleepTime > 0) {
+                            locker.wait(sleepTime);
+                        } else {
+                            // for standard metric, 
+                            // the process will be triggerred from sidecar
+                            locker.wait();
+                        }
                         executor.execute();
                     } catch (InterruptedException e) {
                     }
                 }
             }
+            System.out.println("daemon thread stop.");
         }
 
         public void invoke() {

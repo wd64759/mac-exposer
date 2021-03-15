@@ -41,15 +41,15 @@ public class AgentConnector {
         try {
             reqText = gson.toJson(req);
             sc.send(reqText);
-            System.out.println("<<sidecar:AgentConnector>> sendMessage - " + reqText);
+            // System.out.println("<<sidecar:AgentConnector>> sendMessage - " + reqText);
         } catch (Exception e) {
-            System.out.println("<<sidecar:AgentConnector>> sendMessage - unexpected happened");
-            e.printStackTrace();
+            System.out.println("<<sidecar:AgentConnector>> sendMessage - unexpected happened : " + e);
+            // e.printStackTrace();
         }
     }
 
     public void onMessage(String resp) {
-        System.out.println("::websockt::on_message:" + resp);
+        // System.out.println("::websockt::on_message:" + resp);
         try {
             CmdEntity ce = gson.fromJson(resp, CmdEntity.class);
             listeners.values().stream().forEach(t->{
@@ -63,10 +63,12 @@ public class AgentConnector {
     }
 
     public void addListener(String name, TaskCallback collector) {
+        System.out.println("listener hooked for rule:" + name);
         listeners.put(name, collector);
     }
 
     public void removeListener(String name) {
+        System.out.println("listener detached for rule:" + name);
         listeners.remove(name);
     }
 

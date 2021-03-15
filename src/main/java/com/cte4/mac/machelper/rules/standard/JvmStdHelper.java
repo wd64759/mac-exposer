@@ -12,7 +12,6 @@ public class JvmStdHelper extends Helper {
     }
     
     public void enableMonitor() {
-        System.out.println(String.format("::enable rule::", this.rule.getName()));
         JVMCollector.start();
     }
 
