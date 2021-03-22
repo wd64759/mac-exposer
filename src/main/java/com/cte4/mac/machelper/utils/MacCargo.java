@@ -27,17 +27,29 @@ public class MacCargo implements Runnable {
         while(!stop) {
             try {
                 process();
-                Thread.sleep(sleeptime);
+                synchronized(instance) {
+                    instance.wait(sleeptime);
+                }
+            } catch (InterruptedException ie) {
             } catch (Exception e) {
                 e.printStackTrace();
             }
+        }
+        System.out.println("::target:cargo-daemon: cargo is down");
+    }
+
+    public void stop() {
+        stop = true;
+        synchronized(instance) {
+            instance.notifyAll();
         }
     }
 
     public void init() throws Exception {
         Thread t = new Thread(this);
+        t.setDaemon(true);
         t.start();
-        System.out.println("<<client:cargo>> cargo train is ready...");
+        System.out.println("::target:cargo-daemon: cargo is up");
     }
 
     /**

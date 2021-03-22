@@ -17,6 +17,10 @@ public class UsageFuncHelper extends Helper {
     protected UsageFuncHelper(Rule rule) {
         super(rule);
     }
+
+    public static void installed(Rule rule) {
+        System.out.println("::install rule::" + RULE_NAME);
+    }
     
     public void enableMonitor() {
         System.out.println("::disable rule::" + RULE_NAME);
