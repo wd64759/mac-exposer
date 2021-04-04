@@ -1,76 +1,59 @@
 package com.cte4.mac.machelper.collectors;
 
-import java.lang.management.ManagementFactory;
-import java.lang.management.ThreadMXBean;
-
-import com.cte4.mac.machelper.model.ReqEntity;
+import com.cte4.mac.machelper.model.CmdEntity;
+import com.cte4.mac.machelper.model.CmdTypEnum;
+import com.cte4.mac.machelper.model.MetricsEntity;
 import com.cte4.mac.machelper.utils.AgentConnector;
 
-public class JVMCollector implements Runnable {
+import io.prometheus.jmx.shaded.io.prometheus.client.hotspot.StandardExports;
 
-    public boolean endFlag;
+public class JVMCollector implements TaskExecutor, TaskCallback {
+
+    private static final String RULE_NAME = "JVM_STD";
     private AgentConnector conn;
-    private long sleepTime = 5000;
+    StandardExports stdExports;
 
-    public static JVMCollector runner;
-
-    @Override
-    public void run() {
-        ThreadMXBean threads = ManagementFactory.getThreadMXBean();
-        while (!endFlag && conn != null) {
-            ReqEntity threadCount = new ReqEntity("jvm.threads.total.count", "gauge",
-                    String.valueOf(threads.getThreadCount()));
-            ReqEntity peakCount = new ReqEntity("jvm.threads.peak.count", "gauge",
-                    String.valueOf(threads.getPeakThreadCount()));
-            ReqEntity daemonCount = new ReqEntity("jvm.threads.daemon.count", "gauge",
-                    String.valueOf(threads.getPeakThreadCount()));
-            conn.sendMessage(threadCount);
-            conn.sendMessage(peakCount);
-            conn.sendMessage(daemonCount);
-            try {
-                synchronized (JVMCollector.class) {
-                    JVMCollector.class.wait(sleepTime);
-                }
-            } catch (InterruptedException e) {
-            }
-        }
-    }
-
-    public void stopProcess() {
-        endFlag = true;
-        try {
-            synchronized (JVMCollector.class) {
-                JVMCollector.class.notifyAll();
-            }
-        } catch (Exception e) {
-        }
-    }
-
-    public void setConn(AgentConnector conn) {
-        this.conn = conn;
+    public JVMCollector() {
+        conn = AgentConnector.build();
+        stdExports = new StandardExports();
     }
 
     public static void start() {
-        if (runner == null) {
-            synchronized(JVMCollector.class) {
-                if(runner == null) {
-                    AgentConnector conn = AgentConnector.build();
-                    runner = new JVMCollector();
-                    runner.setConn(conn);
-                    runner.endFlag = false;
-                    new Thread(runner).start();
-                    System.out.println("<<sidecar:JVMController>> start");
-                }
-            }
+        JVMCollector collector = new JVMCollector();
+        boolean status = BaseCollector.startRunner(RULE_NAME, collector, -1);
+        if (status) {
+            System.out.println("rule is enabled. rule-name:" + RULE_NAME);
+            AgentConnector.build().addListener(RULE_NAME, collector);
         }
     }
 
+    public static void invoke() {
+        BaseCollector.invoke(RULE_NAME);
+    }
+
     public static void stop() {
-        if (runner != null) {
-            runner.stopProcess();
-            runner = null;
-            System.out.println("<<sidecar:JVMController>> stop");
-        }
+        System.out.println("rule is disabled and quit. rule-name:"+ RULE_NAME);
+        AgentConnector.build().removeListener(RULE_NAME);
+        BaseCollector.stopRunner(RULE_NAME);
+    }
+
+    @Override
+    public void callback(CmdEntity cmdEntity) {
+        BaseCollector.invoke(RULE_NAME);
+    }
+
+    @Override
+    public boolean isAcceptable(CmdEntity ce) {
+        if (ce.getCmdType().equals(CmdTypEnum.STD) && RULE_NAME.equalsIgnoreCase(ce.getRuleName()))
+            return true;
+        return false;
+    }
+
+    @Override
+    public void execute() {
+        MetricsEntity metrics = MetricsEntity.stdBundle(RULE_NAME);
+        metrics.getMetrics().addAll(stdExports.collect());
+        conn.sendMessage(metrics);
     }
 
 }

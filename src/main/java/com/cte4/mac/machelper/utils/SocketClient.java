@@ -40,7 +40,6 @@ public class SocketClient extends WebSocketClient {
     @Override
     public void onError(Exception ex) {
         System.out.println("<<sidecar:SocketClient>> on error - " + ex.getMessage());
-        ex.printStackTrace();
     }
     
 }

@@ -21,6 +21,7 @@ dependencies {
 	
     compile 'org.java-websocket:Java-WebSocket:1.3.5'
 	compile 'com.google.code.gson:gson:2.8.0'
+    compile 'io.prometheus.jmx:jmx_prometheus_javaagent:0.15.0'
 
 	testImplementation("org.junit.jupiter:junit-jupiter-api:5.1.0") 
   	testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.1.0") 
@@ -32,13 +33,13 @@ tasks.withType(JavaCompile) {
 
 jar {
     manifest {
-        attributes(
+        attributes (
                 "Manifest-Version": "${version}",
                 "Premain-Class": "com.cte4.mac.machelper.MACHelperMain",
 				"Agent-Class": "com.cte4.mac.machelper.MACHelperMain",
 				"Can-Redefine-Classes": "false",
-				"Can-Retransform-Classes": "true"
-                )  
+				"Can-Retransform-Classes": "false"
+        )  
     }
     from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
 }
