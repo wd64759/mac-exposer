@@ -29,9 +29,8 @@ public class MacHealthHelper extends Helper {
             public void execute() {
                 MetricsEntity metrics = MetricsEntity.funcBundle(RULE_NAME);
                 CounterMetricFamily counter = new CounterMetricFamily("mac_heartbeats", "Beats from MAC daemon.",
-                        asList("uptime", "agentPort", "pid"));
-                counter = counter.addMetric(asList(Long.toString(System.currentTimeMillis()),
-                        System.getProperty("org.jboss.byteman.mac.agentport"),
+                        asList("agentPort", "pid"));
+                counter = counter.addMetric(asList(System.getProperty("org.jboss.byteman.mac.agentport"),
                         System.getProperty("org.jboss.byteman.mac.pid")), beats.incrementAndGet());
                 metrics.getMetrics().add(counter);
                 AgentConnector.build().sendMessage(metrics);
