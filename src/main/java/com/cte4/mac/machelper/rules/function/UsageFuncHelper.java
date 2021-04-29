@@ -35,7 +35,11 @@ public class UsageFuncHelper extends Helper {
         GaugeMetricFamily tsGauge = new GaugeMetricFamily(String.format("mac_perf_latency_milliseconds", method),
                 "Time cost of method process.", asList("class","method","rulename"));
         tsGauge = tsGauge.addMetric(asList(clz, method, RULE_NAME), timecost);
-        metrics.getMetrics().add(tsGauge);
+        synchronized(metrics) {
+            metrics.getMetrics().add(tsGauge);
+        }
         AgentConnector.build().sendMessage(metrics);
     }
+
+    
 }
