@@ -1,5 +1,12 @@
 package com.cte4.mac.machelper.utils;
 
+import java.net.URI;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
+import java.net.http.HttpResponse.BodyHandler;
+import java.net.http.HttpResponse.BodyHandlers;
+
 public class MacCargo implements Runnable {
 
     static boolean stop;
@@ -27,6 +34,7 @@ public class MacCargo implements Runnable {
         while(!stop) {
             try {
                 process();
+                heatbeat();
                 synchronized(instance) {
                     instance.wait(sleeptime);
                 }
@@ -36,6 +44,27 @@ public class MacCargo implements Runnable {
             }
         }
         System.out.println("::target:cargo-daemon: cargo is down");
+    }
+
+    /**
+     * send agent port
+     */
+    private void heatbeat() {
+    }
+
+    /**
+     * to read and upload MAC annotation configuration
+     */
+    private void uploadCfg() {
+        String uri = String.format("http://%s", AgentConnector.MAC_SC_CONN);
+        HttpClient client = HttpClient.newHttpClient();
+        HttpRequest request = HttpRequest.newBuilder().uri(URI.create(uri)).build();
+        try {
+            HttpResponse<String> response = client.send(request, BodyHandlers.ofString());
+            System.out.println(">>" + response.body());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public void stop() {

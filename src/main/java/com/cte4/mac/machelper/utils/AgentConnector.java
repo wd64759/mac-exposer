@@ -23,10 +23,11 @@ public class AgentConnector {
     private static long RETRY_INTERVAL = 500;
     private boolean isConnected = false;
     public Map<String, TaskCallback> listeners = new ConcurrentHashMap<>();
+    public static String MAC_SC_CONN = "localhost:7011";
 
     private AgentConnector() {
         pid = ManagementFactory.getRuntimeMXBean().getName().split("@")[0];
-        String wsUrl = "ws://localhost:7011/websocket/" + pid;
+        String wsUrl = String.format("ws://%s/websocket/%s", MAC_SC_CONN, pid);
         wsURI = URI.create(wsUrl);
         reconnect();
     }
@@ -75,8 +76,11 @@ public class AgentConnector {
         String reqText = null;
         try {
             if (isConnected || !reconnect()) {
-                reqText = gson.toJson(req);
-                sc.send(reqText);
+                synchronized(req) {
+                    reqText = gson.toJson(req);
+                    sc.send(reqText);
+                    req.getMetrics().clear();
+                }
             } else {
                 System.out.println("::agent-send: request drop for conn broken");
             }
