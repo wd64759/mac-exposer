@@ -2,8 +2,8 @@ plugins {
 	id 'java'
 }
 
-group = 'com.cte4.mac.machelper'
-version = '0.0.1'
+group = 'com.cte4.mac.exposer'
+version = '1.0'
 sourceCompatibility = '1.8'
 
 allprojects {
@@ -37,8 +37,8 @@ jar {
     manifest {
         attributes (
                 "Manifest-Version": "${version}",
-                "Premain-Class": "com.cte4.mac.machelper.MACHelperMain",
-				"Agent-Class": "com.cte4.mac.machelper.MACHelperMain",
+                "Premain-Class": "com.cte4.mac.exposer.MACHelperMain",
+				"Agent-Class": "com.cte4.mac.exposer.MACHelperMain",
 				"Can-Redefine-Classes": "false",
 				"Can-Retransform-Classes": "false"
         )  
