@@ -3,5 +3,9 @@ plugins {
 }
 
 dependencies {
-    implementation project(':common')
+    compile project(':common')
 }
+
+// jar {
+// 	from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
+// }

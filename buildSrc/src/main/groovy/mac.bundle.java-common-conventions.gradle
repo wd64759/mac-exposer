@@ -19,10 +19,11 @@ repositories {
 }
 
 dependencies {
-    compile 'org.apache.logging.log4j:log4j-core:2.14.1'
-    compile 'org.springframework.boot:spring-boot-starter-actuator:2.4.3'
+    implementation 'org.apache.logging.log4j:log4j-core:2.14.1'
+    implementation 'org.springframework.boot:spring-boot-starter-actuator:2.4.3'
     compile 'io.micrometer:micrometer-registry-prometheus:1.6.4'
-    compile 'com.google.code.gson:gson:2.8.0'
+    implementation 'com.google.code.gson:gson:2.8.0'
+    implementation 'org.jboss.byteman:byteman:4.0.13'
 
     // Use JUnit Jupiter API for testing.
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.6.2'
